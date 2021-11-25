@@ -1,14 +1,24 @@
 import { renderBlock } from './lib.js';
 import { formatDate, getLastDayOfNextMonth, shiftDate } from './date-utils.js';
 
+
+/** Функция ренедра формы поиска
+ * @param dateArrival {Date} - дата прибытия в отель
+ * @param dateDeparture {Date} - дата отбытия в отель
+ */
 export function renderSearchFormBlock(
   dateArrival?: Date,
   dateDeparture?: Date
 ): void {
+  // изменяем дату прибытия
   dateArrival = dateArrival || shiftDate(new Date(), 1)
+  // форматируем дату
   const arrival = formatDate(dateArrival);
+  // изменяем дату отбытия
   const departure = formatDate(dateDeparture || shiftDate(dateArrival, 2));
+  //форматируем текущую дату
   const now = formatDate(new Date());
+  // получаем дату последнего дня в месяце
   const lastDayOfNextMonth = formatDate(getLastDayOfNextMonth(new Date()));
 
   renderBlock(
