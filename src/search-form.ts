@@ -1,5 +1,8 @@
 import { renderBlock } from './lib.js';
 import { formatDate, getLastDayOfNextMonth, shiftDate } from './date-utils.js';
+import {ISearchFormData, searchFormFunc} from './search-helpers'
+
+export type namesType = 'checkin' | 'checkout' | 'price'
 
 
 /** Функция ренедра формы поиска
@@ -20,6 +23,20 @@ export function renderSearchFormBlock(
   const now = formatDate(new Date());
   // получаем дату последнего дня в месяце
   const lastDayOfNextMonth = formatDate(getLastDayOfNextMonth(new Date()));
+
+  function submitFormEvent(e:SubmitEvent, arrayValues:namesType[]){
+    e.preventDefault()
+    if (e.target){
+      const formData = new FormData(e.target as HTMLFormElement)
+      const formDataEntries: ISearchFormData = {};
+
+      arrayValues.forEach(key => {
+        formDataEntries[key] = <namesType>formData.get(key)
+      })
+
+      searchFormFunc(formDataEntries)
+    }
+  }
 
   renderBlock(
     'search-form-block',
@@ -58,4 +75,11 @@ export function renderSearchFormBlock(
     </form>
     `
   )
+
+  const form = document.getElementById('form')
+
+  if (form){
+    const arrayNames:namesType[] = ['checkin','checkout','price']
+    form.addEventListener('submit', ev => submitFormEvent(ev,arrayNames ))
+  }
 }

@@ -2,9 +2,11 @@ import { renderSearchFormBlock } from './search-form.js'
 import { renderSearchStubBlock } from './search-results.js'
 import { renderUserBlock } from './user.js'
 import { renderToast } from './lib.js'
+import {User, getFavoritesAmount, getUserData} from './user-model.js'
 
 window.addEventListener('DOMContentLoaded', () => {
-  renderUserBlock(12, 'Wade Warren', './img/avatar.png') //функция для задания 2
+  const user: User = getUserData();
+  renderUserBlock(getFavoritesAmount(), user.userName, user.avatarUrl) //функция для задания 2
   renderSearchFormBlock() //функция для задания 3
   renderSearchStubBlock()
   renderToast(
